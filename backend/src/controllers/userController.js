@@ -1,6 +1,10 @@
 import { User } from "./models/user/user.model.js"; // Adjust path as needed
 
 
+/**
+* Get details of the authenticated user.
+* GET /api/user/me
+*/
 export const getUserDetails = async (req, res) => {
     try {
         const userId = req.user?.id; // Get userId from the authenticated request
@@ -11,7 +15,9 @@ export const getUserDetails = async (req, res) => {
         }
 
 
-        const user = await User.findById(userId)
+          const user = await User.findById(userId).select("-password"); // Exclude password from response
+
+
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
